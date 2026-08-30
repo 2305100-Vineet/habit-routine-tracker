@@ -37,7 +37,48 @@ A full-stack habit tracking application with secure authentication, email-based 
 - MySQL
 
 ### Backend
+
 ```bash
 cd server
 npm install
 ```
+
+Create a `.env` file in `server/`:
+PORT=5000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_mysql_password
+DB_NAME=habit_tracker
+JWT_SECRET=your_random_secret
+EMAIL_USER=your_gmail_address@gmail.com
+EMAIL_APP_PASSWORD=your_gmail_app_password
+
+Run the SQL schema (see `/server` for table definitions: `users`, `habits`, `completion_logs`, `otp_verifications`).
+
+```bash
+npm run dev
+```
+
+### Frontend
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`, with the API running on `http://localhost:5000`.
+
+## Project Structure
+habit-tracker/
+├── client/ # React frontend
+│ └── src/
+│ ├── api/
+│ ├── components/
+│ ├── context/
+│ └── pages/
+└── server/ # Express backend
+├── config/
+├── middleware/
+├── routes/
+└── utils/
