@@ -9,6 +9,7 @@ const authenticateToken = require('./middleware/auth');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
+app.set('trust proxy', 1);
 
 app.use(cors());
 app.use(express.json());
@@ -21,8 +22,6 @@ app.get('/api/test-protected', authenticateToken, (req, res) => {
   res.json({ message: 'You accessed a protected route', user: req.user });
 });
 
-// Must be registered AFTER all routes — Express calls this only when a route
-// calls next(err), or when an async route throws and something forwards it here.
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
