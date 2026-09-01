@@ -1,7 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const dns = require('dns');
-const fs = require('fs');
 require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
@@ -23,33 +21,7 @@ app.use('/api/logs', logRoutes);
 app.get('/api/test-protected', authenticateToken, (req, res) => {
   res.json({ message: 'You accessed a protected route', user: req.user });
 });
-app.get('/api/debug-db-env', (req, res) => {
-  let cwdFiles = [];
-  try {
-    cwdFiles = fs.readdirSync(process.cwd());
-  } catch (e) {
-    cwdFiles = ['ERROR: ' + e.message];
-  }
-  let envFileContent;
-  try {
-    envFileContent = fs.readFileSync(process.cwd() + '/.env', 'utf8');
-  } catch (e) {
-    envFileContent = 'NO FILE FOUND: ' + e.message;
-  }
 
-  const hostRaw = process.env.DB_HOST;
-  dns.lookup(hostRaw, (err, address) => {
-    res.json({
-      host_raw: JSON.stringify(hostRaw),
-      host_length: hostRaw ? hostRaw.length : null,
-      dns_error: err ? err.message : null,
-      resolved_address: address || null,
-      cwd: process.cwd(),
-      cwd_files: cwdFiles,
-      env_file_on_disk: envFileContent,
-    });
-  });
-});
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
